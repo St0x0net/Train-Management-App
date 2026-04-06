@@ -1,70 +1,60 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * =======================================================
- * MAIN CLASS - App (Use Case 9: Group Bogies by Type)
+ * MAIN CLASS - App (Use Case 11: Validate Train ID & Cargo Codes)
  * =======================================================
  * * Description:
- * This class groups bogies into categories based on their
- * names using the Stream groupingBy collector.
+ * This class ensures that Train IDs and Cargo Codes follow
+ * strict business rules using Regular Expressions (Regex).
  * * * At this stage, the application:
- * - Creates a List of bogie objects
- * - Converts list into stream
- * - Applies groupingBy() collector
- * - Stores results in a Map
- * - Displays grouped bogie categories
- * * * This maps categorical grouping using Streams.
+ * - Defines regex patterns for identifiers
+ * - Compiles patterns into Pattern objects
+ * - Validates input using Matcher.matches()
+ * - Rejects malformed data to ensure integrity
+ * * * This maps format enforcement using Regex.
  * * * @author Developer
- * @version 9.0
+ * @version 11.0
  */
 public class App {
-
-    // Reusing Bogie model from previous use cases
-    static class Bogie {
-        String name;
-        int capacity;
-
-        Bogie(String name, int capacity) {
-            this.name = name;
-            this.capacity = capacity;
-        }
-
-        @Override
-        public String toString() {
-            return "Bogie{name='" + name + "', capacity=" + capacity + "}";
-        }
-    }
 
     public static void main(String[] args) {
         // Header Display
         System.out.println("=========================================");
-        System.out.println(" UC9 - Group Bogies by Type (groupingBy) ");
+        System.out.println(" UC11 - Validate Train ID & Cargo Codes (Regex) ");
         System.out.println("=========================================\n");
 
-        // Create List of passenger bogies
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("Sleeper", 72)); // Multiple bogies of same type
-        bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("AC Chair", 56));
+        // 1. Define Regex Patterns
+        // TRN-\\d{4} matches "TRN-" followed by exactly 4 digits
+        String trainIdRegex = "TRN-\\d{4}";
+        // PET-[A-Z]{2} matches "PET-" followed by exactly 2 uppercase letters
+        String cargoCodeRegex = "PET-[A-Z]{2}";
 
-        // ---- Stream Grouping Logic ----
-        // groupingBy(b -> b.name) creates a Map where:
-        // Key = Bogie Name (String)
-        // Value = List of Bogies with that name
-        Map<String, List<Bogie>> groupedBogies = bogies.stream()
-                .collect(Collectors.groupingBy(b -> b.name));
+        // 2. Compile Patterns
+        Pattern trainPattern = Pattern.compile(trainIdRegex);
+        Pattern cargoPattern = Pattern.compile(cargoCodeRegex);
 
-        // Display the Grouped Results
-        System.out.println("Bogies Grouped by Type:");
-        groupedBogies.forEach((type, list) -> {
-            System.out.println(type + ": " + list);
-        });
+        // 3. Test Cases (Valid and Invalid)
+        String[] testTrainIds = {"TRN-1234", "TRAIN12", "TRN-123", "TRN-12345"};
+        String[] testCargoCodes = {"PET-AB", "PET-ab", "PET123", "PET-XYZ"};
 
-        System.out.println("\nUC9 grouping operations completed...");
+        // Validate Train IDs
+        System.out.println("--- Train ID Validation ---");
+        for (String id : testTrainIds) {
+            Matcher matcher = trainPattern.matcher(id);
+            boolean isValid = matcher.matches();
+            System.out.println("Input: " + id + " -> " + (isValid ? "VALID" : "INVALID"));
+        }
+
+        // Validate Cargo Codes
+        System.out.println("\n--- Cargo Code Validation ---");
+        for (String code : testCargoCodes) {
+            Matcher matcher = cargoPattern.matcher(code);
+            boolean isValid = matcher.matches();
+            System.out.println("Input: " + code + " -> " + (isValid ? "VALID" : "INVALID"));
+        }
+
+        System.out.println("\nUC11 validation operations completed...");
     }
 }
