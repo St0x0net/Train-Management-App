@@ -1,46 +1,46 @@
 /**
  * =======================================================
- * UC15 - Cargo Safety (try-catch-finally)
+ * UC16 - Bubble Sort (Manual Array Sorting)
  * =======================================================
  * Description:
- * This class validates cargo safety using a RuntimeException.
- * It demonstrates the use of 'finally' to ensure the
- * "Operation Completed" message always displays.
+ * This class implements the Bubble Sort algorithm to sort
+ * an array of bogie capacities in ascending order.
  */
 
-// Custom Runtime Exception for safety violations
-class CargoSafetyException extends RuntimeException {
-    CargoSafetyException(String msg) {
-        super(msg);
-    }
-}
+import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
         System.out.println("==============================================");
-        System.out.println("          UC15 - Cargo Safety Check           ");
+        System.out.println("          UC16 - Bogie Capacity Sort          ");
         System.out.println("==============================================\n");
 
-        String shape = "Rectangular";
-        String cargo = "Petroleum";
+        // Sample array of bogie capacities
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        try {
-            // Business Rule: Petroleum cannot be carried in Rectangular bogies
-            if (shape.equals("Rectangular") && cargo.equals("Petroleum")) {
-                throw new CargoSafetyException("Unsafe Cargo! Petroleum requires Cylindrical bogies.");
+        System.out.println("Original Capacities: " + Arrays.toString(capacities));
+
+        // Bubble Sort Algorithm
+        // The outer loop controls the number of passes
+        for (int i = 0; i < capacities.length; i++) {
+
+            // The inner loop performs the adjacent comparisons
+            // We use 'capacities.length - 1' to avoid ArrayIndexOutOfBounds
+            for (int j = 0; j < capacities.length - 1; j++) {
+
+                // If the current element is greater than the next, swap them
+                if (capacities[j] > capacities[j + 1]) {
+                    // Temporary variable to hold the value during the swap
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
             }
-
-            // This line only runs if no exception is thrown
-            System.out.println("Cargo Assigned successfully.");
-
-        } catch (CargoSafetyException e) {
-            // Handles the safety violation
-            System.out.println("ALERT: " + e.getMessage());
-
-        } finally {
-            // This block ALWAYS executes, making it ideal for cleanup or final logging
-            System.out.println("Cleanup: Closing safety logs...");
-            System.out.println("Operation Completed.");
         }
+
+        // Display the final sorted array
+        System.out.println("Sorted Capacities:   " + Arrays.toString(capacities));
+
+        System.out.println("\nUC16: Sorting operation completed successfully.");
     }
 }
