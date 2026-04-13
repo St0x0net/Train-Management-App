@@ -1,32 +1,42 @@
 /**
  * =======================================================
- * UC17 - Arrays.sort() (Optimized Built-in Sorting)
+ * UC18 - Linear Search (Manual Search)
  * =======================================================
  * Description:
- * This class demonstrates the use of the Java Standard
- * Library to sort an array of bogie types alphabetically.
+ * This class demonstrates how to search for a specific Bogie ID
+ * within an array using the Linear Search algorithm.
  */
-
-import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
         System.out.println("==============================================");
-        System.out.println("         UC17 - Bogie Type Alpha Sort         ");
+        System.out.println("          UC18 - Bogie ID Search             ");
         System.out.println("==============================================\n");
 
-        // 1. Initialize an array of Strings (Bogie Types)
-        String[] bogieTypes = {"Sleeper", "AC Chair", "First Class", "General"};
+        // 1. The dataset (Array of Bogie IDs)
+        String[] bogieIDs = {"BG101", "BG205", "BG309"};
 
-        System.out.println("Original List: " + Arrays.toString(bogieTypes));
+        // 2. The item we are looking for
+        String searchKey = "BG205";
 
-        // 2. Use Arrays.sort()
-        // For Strings, this sorts them in lexicographical (alphabetical) order
-        Arrays.sort(bogieTypes);
+        boolean isFound = false;
 
-        // 3. Display the sorted result
-        System.out.println("Sorted List:   " + Arrays.toString(bogieTypes));
+        // 3. Linear Search Logic
+        // We iterate through each element 's' in the array
+        for (String s : bogieIDs) {
+            if (s.equals(searchKey)) {
+                isFound = true;
+                break; // Exit the loop early as we've found our target
+            }
+        }
 
-        System.out.println("\nUC17: Built-in sorting completed.");
+        // 4. Output the result
+        if (isFound) {
+            System.out.println("Result: Bogie " + searchKey + " was found in the consist.");
+        } else {
+            System.out.println("Result: Bogie " + searchKey + " not found.");
+        }
+
+        System.out.println("\nUC18: Search operation completed.");
     }
 }
