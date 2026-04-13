@@ -1,52 +1,46 @@
 /**
  * =======================================================
- * UC14 - Custom Exception (Invalid Capacity)
+ * UC15 - Cargo Safety (try-catch-finally)
  * =======================================================
  * Description:
- * This class demonstrates how to create and throw a custom
- * exception when a Bogie's capacity is invalid (<= 0).
+ * This class validates cargo safety using a RuntimeException.
+ * It demonstrates the use of 'finally' to ensure the
+ * "Operation Completed" message always displays.
  */
 
-// Custom Exception Class
-class InvalidCapacityException extends Exception {
-    public InvalidCapacityException(String msg) {
+// Custom Runtime Exception for safety violations
+class CargoSafetyException extends RuntimeException {
+    CargoSafetyException(String msg) {
         super(msg);
     }
 }
 
-// Bogie model with validation logic
-class Bogie {
-    int capacity;
-
-    Bogie(int capacity) throws InvalidCapacityException {
-        // Business Rule: Capacity must be a positive integer
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Capacity must be > 0. Provided: " + capacity);
-        }
-        this.capacity = capacity;
-    }
-}
-
-// Main Execution Class
 public class App {
     public static void main(String[] args) {
         System.out.println("==============================================");
-        System.out.println("       UC14 - Custom Exception Testing        ");
+        System.out.println("          UC15 - Cargo Safety Check           ");
         System.out.println("==============================================\n");
 
+        String shape = "Rectangular";
+        String cargo = "Petroleum";
+
         try {
-            // Attempting to create a Bogie with invalid (negative) capacity
-            System.out.println("Attempting to create a Bogie with capacity: -10...");
-            Bogie b = new Bogie(-10);
+            // Business Rule: Petroleum cannot be carried in Rectangular bogies
+            if (shape.equals("Rectangular") && cargo.equals("Petroleum")) {
+                throw new CargoSafetyException("Unsafe Cargo! Petroleum requires Cylindrical bogies.");
+            }
 
-            // This line will not execute if the exception is thrown
-            System.out.println("Bogie created successfully with capacity: " + b.capacity);
+            // This line only runs if no exception is thrown
+            System.out.println("Cargo Assigned successfully.");
 
-        } catch (InvalidCapacityException e) {
-            // Handling the custom exception
-            System.err.println("Caught Custom Exception: " + e.getMessage());
+        } catch (CargoSafetyException e) {
+            // Handles the safety violation
+            System.out.println("ALERT: " + e.getMessage());
+
+        } finally {
+            // This block ALWAYS executes, making it ideal for cleanup or final logging
+            System.out.println("Cleanup: Closing safety logs...");
+            System.out.println("Operation Completed.");
         }
-
-        System.out.println("\nUC14 execution completed.");
     }
 }
