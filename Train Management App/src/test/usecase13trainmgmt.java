@@ -1,42 +1,57 @@
 /**
  * =======================================================
- * UC18 - Linear Search (Manual Search)
+ * UC19 - Binary Search (Divide and Conquer)
  * =======================================================
  * Description:
- * This class demonstrates how to search for a specific Bogie ID
- * within an array using the Linear Search algorithm.
+ * This class demonstrates searching for a Bogie ID using
+ * Binary Search. It splits the search area in half each time.
  */
+
+import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
         System.out.println("==============================================");
-        System.out.println("          UC18 - Bogie ID Search             ");
+        System.out.println("          UC19 - Binary Search Logic          ");
         System.out.println("==============================================\n");
 
-        // 1. The dataset (Array of Bogie IDs)
-        String[] bogieIDs = {"BG101", "BG205", "BG309"};
+        // 1. Unsorted dataset
+        String[] bogieIDs = {"BG309", "BG101", "BG205"};
 
-        // 2. The item we are looking for
-        String searchKey = "BG205";
+        // 2. IMPORTANT: Binary search requires a sorted array
+        Arrays.sort(bogieIDs);
+        System.out.println("Sorted IDs for Search: " + Arrays.toString(bogieIDs));
 
-        boolean isFound = false;
+        String key = "BG205";
+        boolean found = false;
 
-        // 3. Linear Search Logic
-        // We iterate through each element 's' in the array
-        for (String s : bogieIDs) {
-            if (s.equals(searchKey)) {
-                isFound = true;
-                break; // Exit the loop early as we've found our target
+        // 3. Define the search boundaries
+        int low = 0;
+        int high = bogieIDs.length - 1;
+
+        // 4. Binary Search Loop
+        while (low <= high) {
+            // Calculate the middle index
+            int mid = (low + high) / 2;
+
+            // compareTo returns 0 if match, < 0 if before key, > 0 if after key
+            int cmp = bogieIDs[mid].compareTo(key);
+
+            if (cmp == 0) {
+                found = true;
+                break; // Target found!
+            } else if (cmp < 0) {
+                // If mid is less than key, ignore the left half
+                low = mid + 1;
+            } else {
+                // If mid is greater than key, ignore the right half
+                high = mid - 1;
             }
         }
 
-        // 4. Output the result
-        if (isFound) {
-            System.out.println("Result: Bogie " + searchKey + " was found in the consist.");
-        } else {
-            System.out.println("Result: Bogie " + searchKey + " not found.");
-        }
+        System.out.println("Search Key: " + key);
+        System.out.println("Found: " + found);
 
-        System.out.println("\nUC18: Search operation completed.");
+        System.out.println("\nUC19: Binary search operation completed.");
     }
 }
